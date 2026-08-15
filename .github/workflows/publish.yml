@@ -1,0 +1,53 @@
+name: Publish
+
+# Release entry point: push a v* tag (e.g. `git tag v1.0.0 && git push origin v1.0.0`).
+# The tag must match package.json version — a mismatch fails the workflow.
+# Publishing uses npm Trusted Publishing (OIDC): no NODE_AUTH_TOKEN secret is
+# stored or required. To enable it once for this package:
+#   npmjs.com → dsh-theme-center → Settings → Trusted Publishing / Publishing
+#   access → GitHub Actions → owner dac114514, repo dsh-theme-center,
+#   workflow publish.yml, main branch.
+# Note: the package must already exist on npm to register a trusted publisher —
+# the very first version is published manually (npm login && npm publish).
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  npm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+
+      # OIDC trusted publishing needs npm >= 11.5.1; Node 24's bundled npm may
+      # lag, so pin a current npm explicitly.
+      - run: npm install -g npm@latest
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm typecheck
+
+      - run: pnpm build
+
+      # The tag and package.json version must agree, or we'd publish the wrong version.
+      - name: Check tag matches package version
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          pkg="$(node -p "require('./package.json').version")"
+          [ "$tag" = "$pkg" ] || { echo "tag $tag != package.json $pkg"; exit 1; }
+
+      - run: npm publish --provenance --access public
