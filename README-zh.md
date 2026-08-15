@@ -7,7 +7,7 @@
 [中文](README-zh.md) | English
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-1.2.0-5865F2.svg)](package.json)
+[![Version](https://img.shields.io/badge/version-1.0.0-5865F2.svg)](package.json)
 
 DeepSeek Harness 内置的主题中心 —— 精选内置主题画廊（浅色 / 深色分组）、一键切换、
 自定义图片壁纸与裁切编辑、以及 dsh-theme 主题文件的导入 / 导出。
@@ -41,7 +41,7 @@ dsh plugin --profile web add <本仓库绝对路径>
   3 列画廊网格展示
 - **一键切换** —— 点击卡片即时换肤，选择持久化，刷新后保留
 - **自定义壁纸** —— 任意图片作为界面背景，支持实时裁切 / 色调编辑
-  （平移、缩放、遮罩不透明度、面板透明度）
+  （平移、缩放、遮罩不透明度、面板不透明度）
 - **dsh-theme 文件** —— 导入他人编写的主题（文件或粘贴），也可导出自己的主题；
   格式有完整文档
 - **中英双语界面**
@@ -52,7 +52,7 @@ dsh plugin --profile web add <本仓库绝对路径>
 
 - 选择图片 —— 图片会在本地缩放到 1440px（JPEG q0.72）并存入设置
 - 横幅预览显示**完整图片**，虚线框标记真实显示区域 —— 框内所见即所得
-- 拖拽平移虚线框，滚轮缩放（100%–300%）；滑杆调节文字可读性遮罩与面板透明度
+- 拖拽平移虚线框，滚轮缩放（100%–300%）；滑杆调节文字可读性遮罩与面板不透明度
 - 所有参数持久化在 `theme-center` 设置命名空间
 
 ## 主题文件格式 Theme file format
@@ -97,7 +97,7 @@ dsh plugin --profile web add <本仓库绝对路径>
 | `gruvbox` | Gruvbox | dark | 暖棕 · 琥珀 · 复古怀旧 |
 | `wallpaper` | 自定义壁纸 | light/dark | 自定义图片 · 可调遮罩 · 壁纸模式 |
 
-所有被移除的调色板（v1.1.0 精简 + v1.2.0 移除）都以可导入的 dsh-theme 文件
+所有未随内置目录交付的调色板都以可导入的 dsh-theme 文件
 **存档在 [`docs/archive/`](docs/archive/)，而不是删除** —— 共 14 个主题，
 一键即可恢复为自定义主题。完整色卡参考：[docs/theme-catalog.md](docs/theme-catalog.md)
 

@@ -1,10 +1,10 @@
 /**
  * Regenerates the archived dsh-theme files under docs/archive/ for the
- * themes that were removed from the built-in catalog — the v1.1.0 curation
- * (palettes duplicating a kept identity) plus the v1.2.0 removals on
- * request (`minimal`, `synthwave`). The palettes are frozen here so the
- * archive stays reproducible; the emitted files are valid dsh-theme JSON
- * and can be re-imported as custom themes from the Theme Center gallery.
+ * themes that are not part of the shipped built-in catalog: palettes that
+ * duplicated a kept identity plus `minimal`/`synthwave` (removed on
+ * request). The palettes are frozen here so the archive stays reproducible;
+ * the emitted files are valid dsh-theme JSON and can be re-imported as
+ * custom themes from the Theme Center gallery.
  *
  * Run: `node scripts/archive-removed-themes.mjs`
  */
@@ -71,7 +71,7 @@ function tokensOf(palette) {
 	};
 }
 
-/** The v1.0.0 palettes that were curated out in v1.1.0 (frozen). */
+/** The palettes that are not part of the shipped built-in catalog (frozen). */
 const REMOVED = [
 	{
 		id: "one-light",
@@ -565,7 +565,7 @@ const REMOVED = [
 			tooltip: "#3d3d3d"
 		}
 	},
-	// ── v1.2.0: removed on request (archived so the palettes stay available) ──
+	// ── removed on request (archived so the palettes stay available) ──
 	{
 		id: "minimal",
 		name: "Minimal",

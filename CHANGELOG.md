@@ -1,80 +1,79 @@
 # Changelog
 
 All notable changes to this project are documented in this file.
+
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.2.0] - 2025-XX-XX
+## [Unreleased]
+
+## [1.0.0] - 2026-08-15
+
+First release of **dsh-theme-center** — the theme center for the dsh web UI.
 
 ### Added
 
-- **Wallpaper banner preview now shows the actual display area**: the preview
-  renders the entire image fitted and overlays a dashed frame (with the rest
-  dimmed) marking the on-screen crop — same cover × zoom × pan math as the
-  full-screen layer, so “inside the frame” is exactly what is displayed.
-- `assets/logo.svg` and README layout aligned with the dsh-market format.
+- **Theme gallery** — a settings section (设置 → 主题) with a 3-column preview
+  grid, light and dark grouped; every card renders a canvas-drawn PNG mock of
+  the theme, and clicking a card switches the interface instantly.
+- **One-click switching with persistence** — selections survive restarts
+  (stored in the `theme-center` settings namespace); `light`/`dark` are the
+  runtime's own themes, all others are registered and painted by the plugin.
+- **Custom wallpaper** — any image as the interface background, downscaled
+  locally (1440 px, JPEG q0.72) and edited in a live crop/tint editor:
+  drag-to-pan, wheel-zoom (100%–300%), readability overlay, and surface
+  opacity; the banner preview shows the full image with a dashed frame
+  marking the exact on-screen crop (what's inside the frame is what you get).
+- **dsh-theme file import/export** — portable JSON theme files (file picker or
+  paste); the format is documented in
+  [`docs/theme-file-format.md`](docs/theme-file-format.md) /
+  [`docs/theme-file-format.zh.md`](docs/theme-file-format.zh.md), with a
+  working example in [`examples/`](examples/).
+- **Archived palettes** — 14 curated-out themes kept as importable dsh-theme
+  files under [`docs/archive/`](docs/archive/), restorable as custom themes in
+  one click (regenerate with `node scripts/archive-removed-themes.mjs`).
+- **Documentation** — [`README.md`](README.md) / [`README-zh.md`](README-zh.md)
+  with screenshot slots, [`docs/theme-catalog.md`](docs/theme-catalog.md)
+  (swatch reference), MIT license, and a controller smoke test
+  (`node scripts/smoke.mjs`, browser-free).
+
+### Changed
+
+- **Curated built-in catalog** — 11 themes, one per visual identity
+  (`light`, `claude`, `sakura`, `paper`, `dark`, `claude-dark`,
+  `tokyo-night`, `graphite`, `monokai`, `gruvbox`, `wallpaper`); see
+  [`docs/theme-catalog.md`](docs/theme-catalog.md).
+- **Unified theme descriptions** — every theme uses the
+  `基调 · 点缀色 · 风格标签` (`base · accent · style`) format in both zh and
+  en dictionaries.
+- **Bilingual UI** — Simplified Chinese and English; the General-settings
+  Appearance row is shadowed so the gallery stays authoritative.
 
 ### Fixed
 
-- **Wallpaper slider / zoom bounce-back** (滑块回弹、缩放回弹). Rapid edits
-  (slider drags, pan, wheel zoom) wrote to the settings document at high
-  frequency; in-flight or stale round-trip notifications were then adopted
-  and reverted the preview + snapped the sliders back. The controller now
-  keeps an “edit-wins” window around local wallpaper writes (same pattern as
-  the selection click-wins window), so the local state is authoritative while
-  an edit is in flight.
-- Smoke test catalog count updated for the smaller catalog.
+- **Wallpaper slider / zoom bounce-back** — rapid edits (slider drags, pan,
+  wheel zoom) wrote to the settings document at high frequency; stale
+  in-flight round-trip notifications could revert the preview and snap the
+  sliders back. The controller now keeps an “edit-wins” window around local
+  wallpaper writes (same pattern as the selection click-wins window), so the
+  local state is authoritative while an edit is in flight.
 
-### Changed
+### Removed
 
-- **Removed the `minimal` and `synthwave` built-in themes** (on request).
-  Both palettes are archived as importable dsh-theme files under
-  [`docs/archive/`](docs/archive/).
-- **Removed the 跟随系统 (follow system) button** from the theme panel
-  toolbar; the system default preference still applies when nothing is
-  selected.
-- Catalog size: 13 → 11 themes.
+- **跟随系统 (follow system) button** from the theme panel toolbar; the
+  system default preference still applies when nothing is selected.
+- The following themes are **not part of the shipped catalog** (palettes
+  duplicated a kept identity; `minimal` and `synthwave` were dropped on
+  request). All 14 remain importable from [`docs/archive/`](docs/archive/):
 
-## [1.1.0] - 2025-XX-XX
+  `one-light`, `solarized-light`, `catppuccin-latte`, `minimal`, `midnight`,
+  `one-dark`, `dracula`, `nord`, `catppuccin`, `night-owl`, `gemini`, `grok`,
+  `chatgpt`, `synthwave`
 
-### Changed
+### Known limitations
 
-- **Curated the built-in catalog** from 25 down to 13 themes. Every theme now
-  owns a distinct visual identity; palettes that duplicated a kept theme were
-  removed (see below). The full catalog is documented in
-  [`docs/theme-catalog.md`](docs/theme-catalog.md).
-- **Unified the description format** for every theme to
-  `基调 · 点缀色 · 风格标签` / `base tone · accent · style tag`
-  (e.g. “暖米 · 陶土橙 · Claude 美学”), in both zh and en dictionaries.
-- Fixed the stale smoke test to match the current controller behavior
-  (shadowed Appearance row, palette-cache repaint, debounced persistence).
-- `pnpm-workspace.yaml` now approves the esbuild postinstall build script so
-  `pnpm build` works out of the box for contributors.
-
-### Removed (archived, not deleted)
-
-The following themes were removed from the built-in catalog because they
-duplicated a kept identity. Their palettes are **preserved as importable
-dsh-theme files** under [`docs/archive/`](docs/archive/) — import any of them
-from the gallery to restore it as a custom theme:
-
-| Removed theme | Kept representative | Reason |
-| ------------- | ------------------- | ------ |
-| `one-light` | `light` | Same white + blue identity |
-| `solarized-light` | `paper` | Same warm-paper family |
-| `catppuccin-latte` | — | Light lavender-gray, trimmed with the light set |
-| `midnight` | `tokyo-night` | Same deep-navy family |
-| `one-dark` | `tokyo-night` | Same dark blue-gray editor family |
-| `dracula` | `tokyo-night` / `synthwave` | Same dark blue-gray / purple family |
-| `nord` | `tokyo-night` | Same dark blue-gray editor family |
-| `catppuccin` | `tokyo-night` / `synthwave` | Same dark blue-gray / purple family |
-| `night-owl` | `tokyo-night` | Same deep-navy family |
-| `gemini` | `graphite` | Same near-black neutral + accent |
-| `grok` | `graphite` | Same near-black neutral + accent |
-| `chatgpt` | `graphite` | Same near-black neutral + accent |
-
-## [1.0.0] - 2025-XX-XX
-
-- Initial release: theme gallery (light/dark grouped), one-click switching,
-  wallpaper background with a crop/tint editor, import/export of user-authored
-  `dsh-theme` files.
+- **Host allowlist patch required for persistence.** Browser-side settings
+  go through an API-gateway allowlist (`WEB_SETTINGS_NAMESPACES` in
+  `dsh-host-apiproxy`); this plugin persists only when `"theme-center"` is on
+  that list. A manual patch is required and must be re-applied after every
+  dsh upgrade — see the README notes.

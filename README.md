@@ -7,7 +7,7 @@
 English | [中文](README-zh.md)
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-1.2.0-5865F2.svg)](package.json)
+[![Version](https://img.shields.io/badge/version-1.0.0-5865F2.svg)](package.json)
 
 The theme center inside DeepSeek Harness — a curated gallery of built-in
 themes (light and dark grouped), one-click switching, a custom-image
@@ -103,7 +103,7 @@ Example: [`examples/aurora.dsh-theme.json`](examples/aurora.dsh-theme.json)
 | `gruvbox` | Gruvbox | dark | Warm brown · Amber · Retro vintage |
 | `wallpaper` | Custom Wallpaper | light/dark | Custom image · Adjustable tint · Wallpaper mode |
 
-Every removed palette (v1.1.0 curation + v1.2.0 removals) is **archived, not
+Every palette that is not part of the shipped catalog is **archived, not
 deleted**, as an importable dsh-theme file in
 [`docs/archive/`](docs/archive/) — 14 themes you can restore in one click.
 Full swatch reference: [docs/theme-catalog.md](docs/theme-catalog.md)

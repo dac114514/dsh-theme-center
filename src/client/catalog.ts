@@ -13,15 +13,13 @@
  *  - `preview` — the swatch palette the gallery card renders (independent of
  *    `tokens` so the card stays legible even for the original themes).
  *
- * Curation (v1.1.0): the catalog is a deliberately small, non-homogeneous
- * set — one theme per visual identity. Palettes that duplicated a kept
- * identity (e.g. `one-light` ≈ `light`, `dracula`/`nord`/`one-dark` ≈ the
- * dark blue-gray editor family, `gemini`/`grok`/`chatgpt` ≈ `graphite`)
- * were archived as importable dsh-theme files under docs/archive/ so no
- * palette is lost — users can re-import them as custom themes.
- *
- * v1.2.0: `minimal` and `synthwave` were removed on request (also archived
- * under docs/archive/).
+ * Curation: the catalog is a deliberately small, non-homogeneous set — one
+ * theme per visual identity. Palettes that duplicated a kept identity
+ * (e.g. `one-light` ≈ `light`, `dracula`/`nord`/`one-dark` ≈ the dark
+ * blue-gray editor family, `gemini`/`grok`/`chatgpt` ≈ `graphite`) were
+ * archived as importable dsh-theme files under docs/archive/, together with
+ * `minimal` and `synthwave` (removed on request) — so no palette is lost;
+ * users can re-import any of them as custom themes.
  *
  * Maintainability: palettes are authored per theme as a flat `Palette` and
  * expanded through `tokensOf` — add a token to `tokensOf` once and every

@@ -57,7 +57,7 @@ export const zh = {
 	"wallpaper.x": "水平位置",
 	"wallpaper.y": "垂直位置",
 	"wallpaper.overlay": "遮罩不透明度",
-	"wallpaper.surface": "面板透明度",
+	"wallpaper.surface": "面板不透明度",
 	"wallpaper.dragHint": "拖拽移动 · 滚轮缩放",
 	"import.open": "导入主题",
 	"import.paste": "粘贴导入",

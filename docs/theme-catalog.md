@@ -32,9 +32,9 @@ swatches below are the gallery-card preview colors.
 
 ## Curation notes
 
-- **One theme per identity.** The catalog went from 25 → 13 themes in v1.1.0
-  (palettes duplicating a kept identity), then 13 → 11 in v1.2.0 (`minimal`
-  and `synthwave` removed on request). See [CHANGELOG.md](../CHANGELOG.md).
+- **One theme per identity.** The catalog ships 11 curated themes; palettes
+  that duplicated a kept identity, plus `minimal` and `synthwave` (removed
+  on request), are archived. See [CHANGELOG.md](../CHANGELOG.md).
 - **Nothing is lost.** Every removed palette is archived as an importable
   dsh-theme file in [`docs/archive/`](archive/) (14 files) and can be
   restored as a custom theme in one click.
