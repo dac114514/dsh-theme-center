@@ -7,34 +7,50 @@
 English | [中文](README-zh.md)
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-1.0.0-5865F2.svg)](package.json)
+[![CI](https://github.com/dac114514/dsh-theme-center/actions/workflows/ci.yml/badge.svg)](https://github.com/dac114514/dsh-theme-center/actions/workflows/ci.yml)
+[![Awesome DSH Plugin](https://awesome-dsh-plugin.com/badge.svg)](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin)
 
 The theme center inside DeepSeek Harness — a curated gallery of built-in
 themes (light and dark grouped), one-click switching, a custom-image
 **wallpaper** with a crop/tint editor, and **import/export** of
-user-authored `dsh-theme` files. Open **Settings → 主题 / Themes**.
+user-authored `dsh-theme` files. Open **Settings → 主题 / Themes**:
 
-![Theme gallery](docs/screenshots/gallery.svg)
+![Theme gallery](docs/screenshots/theme.png)
 
-Click a card to switch instantly — your choice survives restarts:
+The menu lists every built-in theme — light and dark are grouped, and clicking
+a card switches the interface instantly (your choice survives restarts):
 
-![Light and dark themes](docs/screenshots/light-theme.svg)
+![Theme menu](docs/screenshots/theme-window.png)
 
 ## Install
+
+One command, straight from GitHub:
+
+```sh
+dsh plugin --profile web add github:dac114514/dsh-theme-center
+```
+
+or, from a local checkout:
 
 ```sh
 dsh plugin --profile web add <path-to-this-repo>
 ```
 
-Enable the plugin in `$DSH_HOME/profiles/web/cordis.patch.yml`:
+Restart `dsh web`, then open **Settings → 主题 / Themes**.
 
-```yaml
-- insert:
-    - id: theme-center
-      name: dsh-theme-center
+> **Note.** The plugin persists browser-side settings only when the
+> `"theme-center"` namespace is on the API-gateway allowlist
+> (`WEB_SETTINGS_NAMESPACES` in `dsh-host-apiproxy`). A manual patch is
+> currently required — re-apply it after every dsh upgrade (see
+> [Notes](#notes)).
+
+## Uninstall
+
+```sh
+dsh plugin --profile web remove dsh-theme-center
 ```
 
-Restart `dsh web`, then open **Settings → 主题 / Themes**.
+Restart `dsh web`.
 
 ## What you get
 
@@ -50,7 +66,7 @@ Restart `dsh web`, then open **Settings → 主题 / Themes**.
 
 ## Wallpaper
 
-![Wallpaper editor](docs/screenshots/wallpaper.svg)
+![Wallpaper editor](docs/screenshots/theme-edit.png)
 
 - pick an image — it is downscaled locally (1440px, JPEG q0.72) and stored
   in your settings
@@ -85,8 +101,6 @@ Full reference: [docs/theme-file-format.md](docs/theme-file-format.md) ·
 中文版: [docs/theme-file-format.zh.md](docs/theme-file-format.zh.md) ·
 Example: [`examples/aurora.dsh-theme.json`](examples/aurora.dsh-theme.json)
 
-![Import / Export](docs/screenshots/import-export.svg)
-
 ## Built-in themes
 
 | id | Name | Scheme | Description |
@@ -115,11 +129,11 @@ Full swatch reference: [docs/theme-catalog.md](docs/theme-catalog.md)
   persists only when `"theme-center"` is on that list. A manual patch is
   currently required — re-apply it after every dsh upgrade (the patch
   location and steps are documented in the
-  [source-tree README](https://github.com/dsh-market/dsh-theme-center)).
+  [source-tree README](https://github.com/dac114514/dsh-theme-center)).
 - **Development** — `pnpm install` → `pnpm typecheck` → `pnpm build`;
   `node scripts/smoke.mjs` runs the controller smoke test without a browser.
 
 ## License
 
-MIT · [dsh-market](https://github.com/dsh-market) · docs in
+MIT · [dac114514](https://github.com/dac114514) · docs in
 [`docs/`](docs/)

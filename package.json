@@ -2,6 +2,25 @@
   "name": "dsh-theme-center",
   "version": "1.0.0",
   "description": "Theme Center for the dsh web UI: a curated theme gallery (light/dark separated), one-click switching, wallpaper background, and import/export of user-authored dsh-theme files",
+  "keywords": [
+    "deepseek-harness",
+    "dsh-plugin",
+    "dsh",
+    "theme",
+    "theming",
+    "skin",
+    "wallpaper",
+    "theme-center",
+    "web-ui"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dac114514/dsh-theme-center.git"
+  },
+  "homepage": "https://github.com/dac114514/dsh-theme-center#readme",
+  "bugs": {
+    "url": "https://github.com/dac114514/dsh-theme-center/issues"
+  },
   "type": "module",
   "main": "lib/index.js",
   "types": "lib/types/index.d.ts",
@@ -17,6 +36,9 @@
     "./package.json": "./package.json"
   },
   "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
     "client": {
       "inject": [
         "@deepseek-ai/dsh-client-connection",
@@ -30,10 +52,15 @@
       "immediately": true
     }
   },
+  "engines": {
+    "node": "^22.19.0 || >=24"
+  },
   "files": [
     "lib",
     "examples",
-    "README.md"
+    "cordis.patch.yml",
+    "README.md",
+    "README-zh.md"
   ],
   "license": "MIT",
   "dependencies": {

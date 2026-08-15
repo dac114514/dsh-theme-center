@@ -7,33 +7,46 @@
 [中文](README-zh.md) | English
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-1.0.0-5865F2.svg)](package.json)
+[![CI](https://github.com/dac114514/dsh-theme-center/actions/workflows/ci.yml/badge.svg)](https://github.com/dac114514/dsh-theme-center/actions/workflows/ci.yml)
+[![Awesome DSH Plugin](https://awesome-dsh-plugin.com/badge.svg)](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin)
 
 DeepSeek Harness 内置的主题中心 —— 精选内置主题画廊（浅色 / 深色分组）、一键切换、
 自定义图片壁纸与裁切编辑、以及 dsh-theme 主题文件的导入 / 导出。
-打开 **设置 → 主题** 即可使用。
+打开 **设置 → 主题** 即可使用：
 
-![主题画廊](docs/screenshots/gallery.svg)
+![主题画廊](docs/screenshots/theme.png)
 
-点击卡片即时换肤 —— 选择在重启后依然保留：
+菜单列出全部内置主题 —— 浅色 / 深色分组展示，点击卡片即时换肤，选择在重启后依然保留：
 
-![浅色与深色主题](docs/screenshots/light-theme.svg)
+![主题菜单](docs/screenshots/theme-window.png)
 
 ## 安装 Install
+
+一条命令，直接来自 GitHub：
+
+```sh
+dsh plugin --profile web add github:dac114514/dsh-theme-center
+```
+
+或使用本地仓库路径：
 
 ```sh
 dsh plugin --profile web add <本仓库绝对路径>
 ```
 
-在 `$DSH_HOME/profiles/web/cordis.patch.yml` 中启用插件：
+重启 `dsh web`，然后打开 **设置 → 主题**。
 
-```yaml
-- insert:
-    - id: theme-center
-      name: dsh-theme-center
+> **注意。** 插件只有把 `"theme-center"` 加入 API 网关白名单
+> （`dsh-host-apiproxy` 里的 `WEB_SETTINGS_NAMESPACES`）才能持久化浏览器侧设置。
+> 目前需要手动打补丁 —— 每次升级 dsh 后需重新打补丁（见[注意事项](#注意事项-notes)）。
+
+## 卸载 Uninstall
+
+```sh
+dsh plugin --profile web remove dsh-theme-center
 ```
 
-重启 `dsh web`，然后打开 **设置 → 主题**。
+重启 `dsh web`。
 
 ## 功能特性 What you get
 
@@ -48,7 +61,7 @@ dsh plugin --profile web add <本仓库绝对路径>
 
 ## 壁纸 Wallpaper
 
-![壁纸编辑器](docs/screenshots/wallpaper.svg)
+![壁纸编辑器](docs/screenshots/theme-edit.png)
 
 - 选择图片 —— 图片会在本地缩放到 1440px（JPEG q0.72）并存入设置
 - 横幅预览显示**完整图片**，虚线框标记真实显示区域 —— 框内所见即所得
@@ -79,8 +92,6 @@ dsh plugin --profile web add <本仓库绝对路径>
 英文版：[docs/theme-file-format.md](docs/theme-file-format.md) ·
 示例：[`examples/aurora.dsh-theme.json`](examples/aurora.dsh-theme.json)
 
-![导入 / 导出](docs/screenshots/import-export.svg)
-
 ## 内置主题 Built-in themes
 
 | id | 名称 Name | 色系 Scheme | 描述 Description |
@@ -107,10 +118,10 @@ dsh plugin --profile web add <本仓库绝对路径>
   （`dsh-host-apiproxy` 里的 `WEB_SETTINGS_NAMESPACES`）；本插件能持久化的前提
   是把 `"theme-center"` 加入该白名单。目前需要手动打补丁 —— 升级 / 重装 dsh
   后需重新打补丁（补丁位置与步骤见
-  [源码仓库 README](https://github.com/dsh-market/dsh-theme-center)）。
+  [源码仓库 README](https://github.com/dac114514/dsh-theme-center)）。
 - **开发** —— `pnpm install` → `pnpm typecheck` → `pnpm build`；
   `node scripts/smoke.mjs` 可在无浏览器环境下运行控制器冒烟测试。
 
 ## License
 
-MIT · [dsh-market](https://github.com/dsh-market) · 文档见 [`docs/`](docs/)
+MIT · [dac114514](https://github.com/dac114514) · 文档见 [`docs/`](docs/)

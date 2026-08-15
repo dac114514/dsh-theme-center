@@ -1,0 +1,5 @@
+# dsh-theme-center bundle patch: inserts the plugin into a profile's layer stack.
+# Installed automatically when the package is added via `dsh plugin --profile web add`.
+- insert:
+    - id: theme-center
+      name: 'dsh-theme-center'
