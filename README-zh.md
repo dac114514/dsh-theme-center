@@ -6,6 +6,7 @@
 
 [中文](README-zh.md) | English
 
+[![npm version](https://img.shields.io/npm/v/dsh-theme-center.svg)](https://www.npmjs.com/package/dsh-theme-center)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![CI](https://github.com/dac114514/dsh-theme-center/actions/workflows/ci.yml/badge.svg)](https://github.com/dac114514/dsh-theme-center/actions/workflows/ci.yml)
 [![Awesome DSH Plugin](https://awesome-dsh-plugin.com/badge.svg)](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin)
