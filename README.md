@@ -24,16 +24,10 @@ a card switches the interface instantly (your choice survives restarts):
 
 ## Install
 
-One command, straight from GitHub:
+One command:
 
 ```sh
 dsh plugin --profile web add github:dac114514/dsh-theme-center
-```
-
-or, from a local checkout:
-
-```sh
-dsh plugin --profile web add <path-to-this-repo>
 ```
 
 Restart `dsh web`, then open **Settings → 主题 / Themes**.

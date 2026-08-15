@@ -22,16 +22,10 @@ DeepSeek Harness 内置的主题中心 —— 精选内置主题画廊（浅色 
 
 ## 安装 Install
 
-一条命令，直接来自 GitHub：
+一条命令：
 
 ```sh
 dsh plugin --profile web add github:dac114514/dsh-theme-center
-```
-
-或使用本地仓库路径：
-
-```sh
-dsh plugin --profile web add <本仓库绝对路径>
 ```
 
 重启 `dsh web`，然后打开 **设置 → 主题**。
