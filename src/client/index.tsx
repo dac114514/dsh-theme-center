@@ -38,6 +38,7 @@ import {
 	SETTINGS_NAMESPACE
 } from "../shared/theme-file.ts";
 import { CATALOG, catalogOf, materializeCatalog } from "./catalog.ts";
+import { bindCompatSettingsScope } from "./compat-settings-scope.ts";
 import { SETTINGS_NS, en, zh } from "./locales.ts";
 import { ParseResult, downloadTheme, parseThemeFile, serializeTheme } from "./parser.ts";
 import { injectStyles } from "./styles.ts";
@@ -107,7 +108,7 @@ class ThemeCenterController {
 	constructor(ctx) {
 		this.ctx = ctx;
 		this.theme = ctx.get("theme");
-		this.scope = ctx.settingsScope.bind({ namespace: SETTINGS_NAMESPACE });
+		this.scope = bindCompatSettingsScope(ctx, { namespace: SETTINGS_NAMESPACE });
 		this.themeScope = ctx.settingsScope.bind({ namespace: "ui-theme" });
 		/** Controller-owned mirror state; the section store is synced on mount. */
 		this.state = {

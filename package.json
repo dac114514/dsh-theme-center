@@ -1,7 +1,7 @@
 {
   "name": "dsh-theme-center",
   "version": "1.0.0",
-  "description": "Theme Center for the dsh web UI: a curated theme gallery (light/dark separated), one-click switching, wallpaper background, and import/export of user-authored dsh-theme files",
+  "description": "DeepSeek Harness 主题中心 · Theme Center for dsh web UI：精选主题画廊（浅色/深色分组）、一键切换、自定义壁纸、dsh-theme 导入导出",
   "keywords": [
     "deepseek-harness",
     "dsh-plugin",
@@ -55,6 +55,10 @@
   "engines": {
     "node": "^22.19.0 || >=24"
   },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "files": [
     "lib",
     "examples",
@@ -68,25 +72,27 @@
     "@deepseek-ai/schemastery": "^3.18.1"
   },
   "peerDependencies": {
-    "react": "^18.2.0",
     "@deepseek-ai/cordis": "^4.0.1",
     "@deepseek-ai/dsh-client-runtime": "^0.1.0-rc.6",
     "@deepseek-ai/dsh-client-ui-primitives": "^0.1.0-rc.6",
     "@deepseek-ai/dsh-client-ui-settings": "^0.1.0-rc.6",
     "@deepseek-ai/dsh-client-ui-slots": "^0.1.0-rc.6",
-    "@deepseek-ai/dsh-client-ui-theme": "^0.1.0-rc.6"
+    "@deepseek-ai/dsh-client-ui-theme": "^0.1.0-rc.6",
+    "react": "^18.2.0"
   },
   "devDependencies": {
-    "esbuild": "^0.25.0",
-    "typescript": "^5.6.0",
-    "@types/react": "^18.3.0",
-    "react": "^18.2.0",
     "@deepseek-ai/cordis": "^4.0.1",
     "@deepseek-ai/dsh-client-runtime": "^0.1.0-rc.6",
     "@deepseek-ai/dsh-client-ui-primitives": "^0.1.0-rc.6",
     "@deepseek-ai/dsh-client-ui-settings": "^0.1.0-rc.6",
     "@deepseek-ai/dsh-client-ui-slots": "^0.1.0-rc.6",
-    "@deepseek-ai/dsh-client-ui-theme": "^0.1.0-rc.6"
+    "@deepseek-ai/dsh-client-ui-theme": "^0.1.0-rc.6",
+    "@deepseek-ai/dsh-host-webserver": "^0.1.0-rc.6",
+    "@types/node": "^26.2.0",
+    "@types/react": "^18.3.0",
+    "esbuild": "^0.25.0",
+    "react": "^18.2.0",
+    "typescript": "^5.6.0"
   },
   "scripts": {
     "build": "node build.mjs",

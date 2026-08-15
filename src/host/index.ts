@@ -12,6 +12,7 @@
  */
 import { settingsNamespace } from "@deepseek-ai/dsh-settings";
 import z from "@deepseek-ai/schemastery";
+import { makeBridgeRoutes } from "./bridge.ts";
 import {
 	FIELD_ACTIVE,
 	FIELD_CUSTOM,
@@ -78,14 +79,25 @@ export const ThemeCenterSettingsSchema = z.object({
 });
 
 /** Required services (cordis fiber inject). */
-export const inject = ["settings"];
+export const inject = ["settings", "webServer"];
 
 /**
- * Register the durable settings section when a settings provider is composed.
+ * Register the durable settings section when a settings provider is composed,
+ * and mount the loopback-only settings bridge that exposes the namespace to
+ * the browser half on hosts whose apiproxy allowlist omits it.
  * @param ctx - host context that may acquire the settings service.
  */
 export function apply(ctx) {
 	ctx.inject(["settings"], (settingsCtx) => {
 		settingsCtx.settings.register(settingsNamespace(SETTINGS_NAMESPACE), ThemeCenterSettingsSchema);
+	});
+	ctx.inject(["settings", "webServer"], (bridgeCtx) => {
+		bridgeCtx.effect(() => {
+			const disposers = makeBridgeRoutes({ settings: bridgeCtx.settings })
+				.map((route) => bridgeCtx.webServer.register(route));
+			return () => {
+				for (const dispose of disposers) dispose();
+			};
+		}, "theme-center: settings bridge");
 	});
 }

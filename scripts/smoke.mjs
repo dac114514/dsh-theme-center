@@ -73,7 +73,28 @@ const externals = {
 	"react/jsx-runtime": { jsx: () => null, jsxs: () => null, Fragment: Symbol("fragment") },
 	react: { useId: () => "smoke-id", useState: (v) => [v, () => {}], useRef: () => ({ current: null }) },
 	"@deepseek-ai/dsh-client-runtime/client": {
-		defineStore: (spec) => ({ spec, create: () => ({ actions: {}, getSnapshot: () => ({}), subscribe: () => () => {} }) })
+		defineStore: (spec) => ({ spec, create: () => ({ actions: {}, getSnapshot: () => ({}), subscribe: () => () => {} }) }),
+		createSnapshotStore: (init) => {
+			let state = { ...init };
+			const listeners = new Set();
+			return {
+				getSnapshot: () => state,
+				subscribe(listener) {
+					listeners.add(listener);
+					return () => listeners.delete(listener);
+				},
+				update(mutator) {
+					const draft = structuredClone(state);
+					mutator(draft);
+					state = draft;
+					for (const listener of listeners) listener();
+				},
+				set(next) {
+					state = next;
+					for (const listener of listeners) listener();
+				}
+			};
+		}
 	},
 	"@deepseek-ai/dsh-client-ui-primitives": new Proxy(
 		{},
@@ -248,14 +269,45 @@ function makeCtx() {
 
 const host = await import(pathToFileURL(join(root, "lib/index.js")).href);
 let registeredNs = null;
+const bridgeRoutes = [];
 const hostCtx = {
 	inject(deps, callback) {
-		check(JSON.stringify(deps) === JSON.stringify(["settings"]), "host injects [settings]");
+		if (JSON.stringify(deps) === JSON.stringify(["settings"])) {
+			check(true, "host injects [settings]");
+			callback({
+				settings: {
+					register(ns, schema) {
+						registeredNs = { ns: String(ns), schema };
+					}
+				}
+			});
+			return;
+		}
+		check(
+			JSON.stringify(deps) === JSON.stringify(["settings", "webServer"]),
+			"host injects [settings, webServer] for the bridge"
+		);
 		callback({
 			settings: {
-				register(ns, schema) {
-					registeredNs = { ns: String(ns), schema };
+				describe() {
+					return [];
+				},
+				mutate() {
+					throw new Error("smoke: mutate not expected");
+				},
+				get writable() {
+					return true;
 				}
+			},
+			webServer: {
+				register(route) {
+					bridgeRoutes.push(route);
+					return () => {};
+				}
+			},
+			effect(callback) {
+				const disposer = callback();
+				return disposer;
 			}
 		});
 	}
@@ -263,6 +315,11 @@ const hostCtx = {
 host.apply(hostCtx);
 check(registeredNs !== null && registeredNs.ns === "theme-center", `host registers namespace ${registeredNs?.ns}`);
 check(typeof registeredNs?.schema === "function" && registeredNs.schema.type === "object", "host schema is a schemastery object");
+check(
+	bridgeRoutes.length === 2
+		&& bridgeRoutes.every(route => route.kind === "exact" && route.path.startsWith("/api/dsh-theme-center/")),
+	"host registers the two bridge routes under /api/dsh-theme-center"
+);
 // The real settings provider resolves the schema against its own default
 // before registering — a default that violates a field bound throws there
 // (this exact bug killed persistence: wallpaper.width default 0 vs min 1).

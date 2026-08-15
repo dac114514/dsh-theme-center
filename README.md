@@ -24,24 +24,31 @@ a card switches the interface instantly (your choice survives restarts):
 
 ## Install
 
-One command:
+Published on npm — one command:
 
 ```sh
-dsh plugin --profile web add github:dac114514/dsh-theme-center
+dsh plugin --profile web add dsh-theme-center
 ```
 
 Restart `dsh web`, then open **Settings → 主题 / Themes**.
 
-> **Note.** The plugin persists browser-side settings only when the
-> `"theme-center"` namespace is on the API-gateway allowlist
-> (`WEB_SETTINGS_NAMESPACES` in `dsh-host-apiproxy`). A manual patch is
-> currently required — re-apply it after every dsh upgrade (see
-> [Notes](#notes)).
+Theme and wallpaper choices persist out of the box: the plugin ships a small
+loopback-only settings bridge for its own namespace, so it works even on hosts
+whose API-gateway allowlist (`WEB_SETTINGS_NAMESPACES`) does not list it. No
+manual patch, no post-upgrade step (see [Notes](#notes)).
 
 ## Uninstall
 
 ```sh
 dsh plugin --profile web remove dsh-theme-center
+```
+
+## Install from GitHub (no npm)
+
+The same plugin can be added straight from the repository:
+
+```sh
+dsh plugin --profile web add github:dac114514/dsh-theme-center
 ```
 
 Restart `dsh web`.
@@ -118,12 +125,15 @@ Full swatch reference: [docs/theme-catalog.md](docs/theme-catalog.md)
 
 ## Notes
 
-- **Known host dependency.** Browser-side settings go through an API-gateway
-  allowlist (`WEB_SETTINGS_NAMESPACES` in `dsh-host-apiproxy`); this plugin
-  persists only when `"theme-center"` is on that list. A manual patch is
-  currently required — re-apply it after every dsh upgrade (the patch
-  location and steps are documented in the
-  [source-tree README](https://github.com/dac114514/dsh-theme-center)).
+- **Settings bridge.** DSH's API-gateway (`dsh-host-apiproxy`) only exposes a
+  hard-coded allowlist of settings namespaces (`WEB_SETTINGS_NAMESPACES`); a
+  third-party namespace like `theme-center` is otherwise refused at the RPC
+  boundary. This plugin ships its own loopback-only settings bridge
+  (`/api/dsh-theme-center`) that re-serves the namespace through the host
+  settings seam — same schema validation, revision fencing and persistence,
+  no patch required. On hosts that already expose the namespace, the official
+  transport is used and the bridge never activates. Bridge requests are
+  restricted to loopback (localhost/127.0.0.1) for security.
 - **Development** — `pnpm install` → `pnpm typecheck` → `pnpm build`;
   `node scripts/smoke.mjs` runs the controller smoke test without a browser.
 

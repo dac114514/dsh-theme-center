@@ -22,22 +22,30 @@ DeepSeek Harness 内置的主题中心 —— 精选内置主题画廊（浅色 
 
 ## 安装 Install
 
-一条命令：
+已发布到 npm —— 一条命令：
 
 ```sh
-dsh plugin --profile web add github:dac114514/dsh-theme-center
+dsh plugin --profile web add dsh-theme-center
 ```
 
 重启 `dsh web`，然后打开 **设置 → 主题**。
 
-> **注意。** 插件只有把 `"theme-center"` 加入 API 网关白名单
-> （`dsh-host-apiproxy` 里的 `WEB_SETTINGS_NAMESPACES`）才能持久化浏览器侧设置。
-> 目前需要手动打补丁 —— 每次升级 dsh 后需重新打补丁（见[注意事项](#注意事项-notes)）。
+主题与壁纸的选择开箱即可持久化：插件自带一个针对自身命名空间的 loopback-only
+设置桥接，即使宿主的 API 网关白名单（`WEB_SETTINGS_NAMESPACES`）未列出它也能
+正常工作。无需手动补丁，升级后也无需额外步骤（见[注意事项](#注意事项-notes)）。
 
 ## 卸载 Uninstall
 
 ```sh
 dsh plugin --profile web remove dsh-theme-center
+```
+
+## 从 GitHub 安装（无需 npm）
+
+也可以直接从仓库安装：
+
+```sh
+dsh plugin --profile web add github:dac114514/dsh-theme-center
 ```
 
 重启 `dsh web`。
@@ -108,11 +116,13 @@ dsh plugin --profile web remove dsh-theme-center
 
 ## 注意事项 Notes
 
-- **已知的宿主依赖。** 浏览器侧设置读写走 API 网关白名单
-  （`dsh-host-apiproxy` 里的 `WEB_SETTINGS_NAMESPACES`）；本插件能持久化的前提
-  是把 `"theme-center"` 加入该白名单。目前需要手动打补丁 —— 升级 / 重装 dsh
-  后需重新打补丁（补丁位置与步骤见
-  [源码仓库 README](https://github.com/dac114514/dsh-theme-center)）。
+- **设置桥接。** DSH 的 API 网关（`dsh-host-apiproxy`）只暴露硬编码的设置命名空间
+  白名单（`WEB_SETTINGS_NAMESPACES`）；像 `theme-center` 这样的第三方命名空间
+  否则会在 RPC 边界被拒绝。本插件自带 loopback-only 设置桥接
+  （`/api/dsh-theme-center`），通过宿主 settings seam 重新提供该命名空间 ——
+  同样的 schema 校验、revision fencing 与持久化，无需打补丁。在宿主已暴露该
+  命名空间时使用官方通道，桥接不会激活。出于安全考虑，桥接请求仅限 loopback
+  （localhost/127.0.0.1）。
 - **开发** —— `pnpm install` → `pnpm typecheck` → `pnpm build`；
   `node scripts/smoke.mjs` 可在无浏览器环境下运行控制器冒烟测试。
 
