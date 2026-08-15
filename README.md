@@ -1,76 +1,28 @@
+<p align="center">
+  <img src="assets/logo.svg" width="96" alt="dsh-theme-center logo">
+</p>
+
 # dsh-theme-center
 
+English | [中文](README-zh.md)
+
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-1.1.0-5865F2.svg)](package.json)
+[![Version](https://img.shields.io/badge/version-1.2.0-5865F2.svg)](package.json)
 
-A theme plugin for the **dsh** web UI — a curated gallery of built-in themes
-(light and dark separated), one-click switching, an image **wallpaper** mode
-with a crop/tint editor, and **import/export** of user-authored `dsh-theme`
-files.
+The theme center inside DeepSeek Harness — a curated gallery of built-in
+themes (light and dark grouped), one-click switching, a custom-image
+**wallpaper** with a crop/tint editor, and **import/export** of
+user-authored `dsh-theme` files. Open **Settings → 主题 / Themes**.
 
-> Theme Center 是 dsh Web 界面的主题插件：内置精选主题画廊（浅色 / 深色分组）、
-> 一键切换、自定义图片壁纸与裁切编辑、以及 dsh-theme 主题文件的导入 / 导出。
+![Theme gallery](docs/screenshots/gallery.svg)
 
----
+Click a card to switch instantly — your choice survives restarts:
 
-## Screenshots
+![Light and dark themes](docs/screenshots/light-theme.svg)
 
-> Placeholder SVGs are committed so the README renders now — replace each with
-> a real capture (`docs/screenshots/*.png`). See
-> [docs/screenshots/README.md](docs/screenshots/README.md).
-
-| Gallery | Light theme | Dark theme |
-| ------- | ----------- | ---------- |
-| ![Gallery](docs/screenshots/gallery.svg) | ![Light theme](docs/screenshots/light-theme.svg) | ![Dark theme](docs/screenshots/dark-theme.svg) |
-
-| Wallpaper mode | Import / Export |
-| -------------- | --------------- |
-| ![Wallpaper](docs/screenshots/wallpaper.svg) | ![Import / Export](docs/screenshots/import-export.svg) |
-
-## Features
-
-- **Curated built-in catalog** — 13 themes, one per visual identity
-  ([catalog reference](docs/theme-catalog.md)); light and dark are grouped
-  in a 3-column gallery grid.
-- **One-click switching** — click a card, the interface re-themes instantly
-  and the selection persists across reloads.
-- **Wallpaper** — use any image as the interface background with a live
-  crop/tint editor (pan, zoom, overlay opacity, surface translucency).
-- **dsh-theme files** — import themes others have authored (file or paste),
-  export your own; the format is fully documented in
-  [docs/theme-file-format.md](docs/theme-file-format.md).
-- **Bilingual UI** — Simplified Chinese and English.
-
-## Built-in themes
-
-| id | Name | Scheme | Description |
-| -- | ---- | ------ | ----------- |
-| `light` | Original Light | light | Pure white · Indigo · DeepSeek original |
-| `claude` | Claude Style | light | Warm cream · Terracotta · Claude aesthetic |
-| `minimal` | Minimal | light | Pure white · Black · Minimalist |
-| `sakura` | Sakura | light | Soft pink · Rose · Spring blossom |
-| `paper` | Warm Paper | light | Warm paper · Sepia · Eye-friendly reading |
-| `dark` | Original Dark | dark | Charcoal · Indigo · DeepSeek original |
-| `claude-dark` | Claude Dark | dark | Warm charcoal · Terracotta · Claude night |
-| `tokyo-night` | Tokyo Night | dark | Deep blue · Bright blue · Tokyo night |
-| `synthwave` | Synthwave | dark | Midnight purple · Neon purple · Synthwave |
-| `graphite` | Graphite | dark | Graphite · Moon white · High-contrast monochrome |
-| `monokai` | Monokai | dark | Dark olive · Cyan-green · Classic high contrast |
-| `gruvbox` | Gruvbox | dark | Warm brown · Amber · Retro vintage |
-| `wallpaper` | Custom Wallpaper | light/dark | Custom image · Adjustable tint · Wallpaper mode |
-
-Palettes removed in the v1.1.0 curation are **archived as importable dsh-theme
-files** in [`docs/archive/`](docs/archive/) — nothing is lost. Full swatch
-reference: [docs/theme-catalog.md](docs/theme-catalog.md).
-
-## Installation
+## Install
 
 ```sh
-# from this repository
-pnpm install
-pnpm build        # produces lib/client.js (browser) + lib/index.js (host)
-
-# install into the dsh web profile
 dsh plugin --profile web add <path-to-this-repo>
 ```
 
@@ -82,35 +34,36 @@ Enable the plugin in `$DSH_HOME/profiles/web/cordis.patch.yml`:
       name: dsh-theme-center
 ```
 
-Then restart `dsh web` and refresh the browser. After editing `src/`, run
-`pnpm build` and refresh — the web profile has HMR disabled, so a page reload
-loads the new bundle.
+Restart `dsh web`, then open **Settings → 主题 / Themes**.
 
-> **Known host dependency.** Browser-side settings reads/writes go through the
-> API gateway, which only serves namespaced settings on an explicit allowlist
-> (`WEB_SETTINGS_NAMESPACES` in `dsh-host-apiproxy`). **This plugin persists
-> only if `"theme-center"` is on that allowlist.** The upstream fix
-> ("plugins expose their own namespaces") is deferred work, so a manual patch
-> is currently required:
->
-> `$DSH_HOME/profiles/node_modules/@deepseek-ai/dsh-host-apiproxy/lib/index.js`
-> — append `"theme-center"` to the `WEB_SETTINGS_NAMESPACES` array. Re-apply
-> after every dsh upgrade/reinstall, otherwise selections, imports and
-> wallpapers silently reset on reload.
+## What you get
 
-## Usage
+- **Curated built-in catalog** — 11 themes, one per visual identity; light and
+  dark are grouped in a 3-column gallery grid
+- **One-click switching** — instant re-theme, the selection persists across
+  reloads
+- **Wallpaper** — any image as the interface background, with a live
+  crop/tint editor (pan, zoom, overlay opacity, surface translucency)
+- **dsh-theme files** — import themes others have authored (file or paste),
+  export your own; the format is fully documented
+- **Bilingual UI** — Simplified Chinese and English
 
-1. **Open the gallery** — Settings → **主题 / Themes**.
-2. **Switch** — click any card; the selection persists automatically.
-3. **Wallpaper** — pick the *Custom Wallpaper* card → **Choose image**, then
-   tune pan/zoom/overlay/surface opacity in the editor.
-4. **Import** — 「导入主题」 (file) or 「粘贴导入」 (paste JSON) — see
-   [docs/theme-file-format.md](docs/theme-file-format.md).
-5. **Export / delete** — every imported theme card has 导出 / 删除 buttons.
+## Wallpaper
+
+![Wallpaper editor](docs/screenshots/wallpaper.svg)
+
+- pick an image — it is downscaled locally (1440px, JPEG q0.72) and stored
+  in your settings
+- the banner preview shows the **entire image** with a dashed frame marking
+  the exact on-screen crop — what's inside the frame is what you get
+- drag to pan the frame, wheel to zoom (100%–300%); sliders tune the
+  readability overlay and surface translucency
+- all parameters persist in the `theme-center` settings namespace
 
 ## Theme file format
 
-Themes are portable JSON documents:
+Themes are portable JSON documents — author your own or re-import an
+archived one:
 
 ```json
 {
@@ -128,60 +81,45 @@ Themes are portable JSON documents:
 }
 ```
 
-Full reference: [docs/theme-file-format.md](docs/theme-file-format.md)
-(中文版: [docs/theme-file-format.zh.md](docs/theme-file-format.zh.md)).
-Working example: [`examples/aurora.dsh-theme.json`](examples/aurora.dsh-theme.json).
+Full reference: [docs/theme-file-format.md](docs/theme-file-format.md) ·
+中文版: [docs/theme-file-format.zh.md](docs/theme-file-format.zh.md) ·
+Example: [`examples/aurora.dsh-theme.json`](examples/aurora.dsh-theme.json)
 
-## Documentation
+![Import / Export](docs/screenshots/import-export.svg)
 
-| Document | Contents |
-| -------- | -------- |
-| [docs/theme-catalog.md](docs/theme-catalog.md) | Built-in catalog with swatches & the unified description format |
-| [docs/theme-file-format.md](docs/theme-file-format.md) | The dsh-theme file format (full token reference) |
-| [docs/theme-file-format.zh.md](docs/theme-file-format.zh.md) | 主题文件格式（中文版） |
-| [docs/archive/](docs/archive/) | Archived palettes of the curated-out themes (importable) |
-| [CHANGELOG.md](CHANGELOG.md) | Release history & curation rationale |
+## Built-in themes
 
-## Architecture
+| id | Name | Scheme | Description |
+| -- | ---- | ------ | ----------- |
+| `light` | Original Light | light | Pure white · Indigo · DeepSeek original |
+| `claude` | Claude Style | light | Warm cream · Terracotta · Claude aesthetic |
+| `sakura` | Sakura | light | Soft pink · Rose · Spring blossom |
+| `paper` | Warm Paper | light | Warm paper · Sepia · Eye-friendly reading |
+| `dark` | Original Dark | dark | Charcoal · Indigo · DeepSeek original |
+| `claude-dark` | Claude Dark | dark | Warm charcoal · Terracotta · Claude night |
+| `tokyo-night` | Tokyo Night | dark | Deep blue · Bright blue · Tokyo night |
+| `graphite` | Graphite | dark | Graphite · Moon white · High-contrast monochrome |
+| `monokai` | Monokai | dark | Dark olive · Cyan-green · Classic high contrast |
+| `gruvbox` | Gruvbox | dark | Warm brown · Amber · Retro vintage |
+| `wallpaper` | Custom Wallpaper | light/dark | Custom image · Adjustable tint · Wallpaper mode |
 
-```
-src/
-  shared/theme-file.ts     format constants, id normalization (shared by host & client)
-  host/index.ts            Node side: registers the theme-center settings namespace schema
-  client/
-    index.tsx              client apply: theme registry, selection persistence, DOM presentation, settings entry
-    catalog.ts             13 built-in themes: palette → token expansion + preview swatches
-    parser.ts              dsh-theme file parsing / validation / export
-    wallpaper.ts           wallpaper processing (downscale, tint, encode) & wallpaper theme building
-    ThemeGallerySection.tsx settings gallery (3-column grid, import/export, wallpaper controls)
-    locales.ts             zh/en dictionaries (zh is the key-set source)
-    styles.ts              injected stylesheet (gallery + wallpaper surfaces)
-```
+Every removed palette (v1.1.0 curation + v1.2.0 removals) is **archived, not
+deleted**, as an importable dsh-theme file in
+[`docs/archive/`](docs/archive/) — 14 themes you can restore in one click.
+Full swatch reference: [docs/theme-catalog.md](docs/theme-catalog.md)
 
-**How themes take effect** — `light`/`dark` are the ui-theme runtime's own
-themes (selection writes `ui-theme.preference`); every other theme is
-registered into the runtime's registry via `ctx.theme.register()`, and while a
-custom theme is active this plugin paints `color-scheme`,
-`body[data-ds-dark-theme]` and the token variables itself (ui-layout's
-presenter cannot express custom ids). The General-settings **Appearance** row
-is shadowed so authority stays in the gallery; built-in selections repaint
-from a cached base palette without settings round trips. Selections, imported
-themes and wallpapers persist in the `theme-center` settings namespace.
+## Notes
 
-## Development
-
-```sh
-pnpm install
-pnpm typecheck   # tsc --noEmit
-pnpm build       # esbuild → lib/client.js + lib/index.js
-node scripts/smoke.mjs          # controller smoke test (no browser)
-node scripts/archive-removed-themes.mjs  # regenerate docs/archive/*
-```
-
-The `scripts/cdp-*.mjs` files are headless-Chrome (CDP) verification tools
-used during development; the `restart-dsh-web*.ps1` helpers are
-machine-specific and intentionally not shipped.
+- **Known host dependency.** Browser-side settings go through an API-gateway
+  allowlist (`WEB_SETTINGS_NAMESPACES` in `dsh-host-apiproxy`); this plugin
+  persists only when `"theme-center"` is on that list. A manual patch is
+  currently required — re-apply it after every dsh upgrade (the patch
+  location and steps are documented in the
+  [source-tree README](https://github.com/dsh-market/dsh-theme-center)).
+- **Development** — `pnpm install` → `pnpm typecheck` → `pnpm build`;
+  `node scripts/smoke.mjs` runs the controller smoke test without a browser.
 
 ## License
 
-[MIT](LICENSE)
+MIT · [dsh-market](https://github.com/dsh-market) · docs in
+[`docs/`](docs/)

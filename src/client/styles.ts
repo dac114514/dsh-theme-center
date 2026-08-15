@@ -373,6 +373,18 @@ body[data-dsh-wallpaper]::after {
 .dsh-tc-wp-preview {
 	height: 220px;
 }
+/* The dashed frame marking the actual display area on the banner preview:
+   everything outside it is dimmed, so "inside the frame" == on screen. */
+.dsh-tc-wp-frame {
+	position: absolute;
+	z-index: 1;
+	border: 1.5px dashed rgba(255, 255, 255, 0.95);
+	border-radius: 2px;
+	box-shadow:
+		0 0 0 9999px rgba(8, 10, 14, 0.34),
+		inset 0 0 0 1px rgba(8, 10, 14, 0.6);
+	pointer-events: none;
+}
 .dsh-tc-wp-controls {
 	display: flex;
 	flex-direction: column;

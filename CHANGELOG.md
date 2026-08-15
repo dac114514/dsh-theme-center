@@ -4,6 +4,37 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2025-XX-XX
+
+### Added
+
+- **Wallpaper banner preview now shows the actual display area**: the preview
+  renders the entire image fitted and overlays a dashed frame (with the rest
+  dimmed) marking the on-screen crop — same cover × zoom × pan math as the
+  full-screen layer, so “inside the frame” is exactly what is displayed.
+- `assets/logo.svg` and README layout aligned with the dsh-market format.
+
+### Fixed
+
+- **Wallpaper slider / zoom bounce-back** (滑块回弹、缩放回弹). Rapid edits
+  (slider drags, pan, wheel zoom) wrote to the settings document at high
+  frequency; in-flight or stale round-trip notifications were then adopted
+  and reverted the preview + snapped the sliders back. The controller now
+  keeps an “edit-wins” window around local wallpaper writes (same pattern as
+  the selection click-wins window), so the local state is authoritative while
+  an edit is in flight.
+- Smoke test catalog count updated for the smaller catalog.
+
+### Changed
+
+- **Removed the `minimal` and `synthwave` built-in themes** (on request).
+  Both palettes are archived as importable dsh-theme files under
+  [`docs/archive/`](docs/archive/).
+- **Removed the 跟随系统 (follow system) button** from the theme panel
+  toolbar; the system default preference still applies when nothing is
+  selected.
+- Catalog size: 13 → 11 themes.
+
 ## [1.1.0] - 2025-XX-XX
 
 ### Changed

@@ -20,6 +20,9 @@
  * were archived as importable dsh-theme files under docs/archive/ so no
  * palette is lost — users can re-import them as custom themes.
  *
+ * v1.2.0: `minimal` and `synthwave` were removed on request (also archived
+ * under docs/archive/).
+ *
  * Maintainability: palettes are authored per theme as a flat `Palette` and
  * expanded through `tokensOf` — add a token to `tokensOf` once and every
  * theme inherits it. Keep the alias set in sync with
@@ -171,55 +174,6 @@ export const CATALOG = [
 			warn: "#b7791f",
 			toast: "#3d3929",
 			tooltip: "#3d3929"
-		}
-	},
-	{
-		id: "minimal",
-		nameKey: "theme.minimal",
-		descKey: "theme.minimal.desc",
-		colorScheme: "light",
-		preview: {
-			base: "#ffffff",
-			surface: "#fafafa",
-			sidebar: "#f7f7f7",
-			bubble: "#f2f2f2",
-			accent: "#111111",
-			text: "#111111"
-		},
-		palette: {
-			base: "#ffffff",
-			surface: "#ffffff",
-			surface2: "#fafafa",
-			surface3: "#f4f4f5",
-			overlay: "#ececee",
-			module: "#fafafa",
-			border1: "rgba(0, 0, 0, 0.05)",
-			border2: "rgba(0, 0, 0, 0.1)",
-			border3: "rgba(0, 0, 0, 0.14)",
-			accent: "#111111",
-			accentHover: "#000000",
-			text: "#111111",
-			textSecondary: "#55555c",
-			textTertiary: "#88888f",
-			textOnAccent: "#ffffff",
-			hover: "rgba(0, 0, 0, 0.04)",
-			active: "rgba(0, 0, 0, 0.08)",
-			sidebar: "#f7f7f7",
-			itemActive: "#eeeeef",
-			itemHover: "#f2f2f3",
-			itemAccent: "rgba(0, 0, 0, 0.06)",
-			bubble: "#f2f2f2",
-			bubbleHighlight: "#e8e8e9",
-			input: "#ffffff",
-			code: "#f7f7f7",
-			inlineCode: "#f0f0f1",
-			scrollbar: "#ddddde",
-			scrollbarHover: "#c8c8cb",
-			error: "#dc2626",
-			success: "#16a34a",
-			warn: "#d97706",
-			toast: "#111111",
-			tooltip: "#111111"
 		}
 	},
 	{
@@ -383,55 +337,6 @@ export const CATALOG = [
 			warn: "#d9a441",
 			toast: "#3a3934",
 			tooltip: "#3a3934"
-		}
-	},
-	{
-		id: "synthwave",
-		nameKey: "theme.synthwave",
-		descKey: "theme.synthwave.desc",
-		colorScheme: "dark",
-		preview: {
-			base: "#150b2e",
-			surface: "#1a0f38",
-			sidebar: "#120927",
-			bubble: "#2a1b52",
-			accent: "#c084fc",
-			text: "#ede9fe"
-		},
-		palette: {
-			base: "#150b2e",
-			surface: "#1a0f38",
-			surface2: "#201346",
-			surface3: "#261a54",
-			overlay: "#2e2066",
-			module: "#261a54",
-			border1: "rgba(196, 181, 253, 0.09)",
-			border2: "rgba(196, 181, 253, 0.16)",
-			border3: "rgba(196, 181, 253, 0.24)",
-			accent: "#c084fc",
-			accentHover: "#d8b4fe",
-			text: "#ede9fe",
-			textSecondary: "#b7a8e8",
-			textTertiary: "#8578b8",
-			textOnAccent: "#1a0f38",
-			hover: "rgba(196, 181, 253, 0.08)",
-			active: "rgba(196, 181, 253, 0.14)",
-			sidebar: "#120927",
-			itemActive: "#2a1b52",
-			itemHover: "#221445",
-			itemAccent: "rgba(192, 132, 252, 0.18)",
-			bubble: "#2a1b52",
-			bubbleHighlight: "#352368",
-			input: "#1a0f38",
-			code: "#1a0f38",
-			inlineCode: "#2b1b55",
-			scrollbar: "#3b2a6e",
-			scrollbarHover: "#4a3686",
-			error: "#fb7185",
-			success: "#34d399",
-			warn: "#fbbf24",
-			toast: "#2e2066",
-			tooltip: "#2e2066"
 		}
 	},
 	{

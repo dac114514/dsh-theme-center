@@ -283,7 +283,7 @@ globalThis.btoa = (s) => Buffer.from(s, "binary").toString("base64");
 const ctx = makeCtx();
 moduleExports.apply(ctx);
 
-check(ctx.theme.themes.length === 2 + 11, `catalog registered into theme runtime (${ctx.theme.themes.length - 2} new)`);
+check(ctx.theme.themes.length === 2 + 9, `catalog registered into theme runtime (${ctx.theme.themes.length - 2} new)`);
 check(document.body._style.has("--dsw-alias-bg-base") === false, "no tokens applied before settings arrive");
 
 // Deliver the settings document: active = "claude".

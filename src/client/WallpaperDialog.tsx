@@ -4,8 +4,12 @@
  * A centered modal (primitives `Modal`, body-portaled) hosting the wallpaper
  * crop/tint editor. Streamlined compared to the old inline editor:
  *
- *  - the preview box keeps drag-to-pan and wheel-zoom (position sliders were
- *    redundant with dragging and are gone);
+ *  - the banner preview shows the ENTIRE image fitted, with a dashed frame
+ *    marking the actual on-screen display area (the cover × zoom crop at the
+ *    pan position); everything outside the frame is dimmed, so what you see
+ *    inside the frame is exactly what the full-screen layer shows;
+ *  - drag-to-pan moves the frame, wheel-zoom grows/shrinks it (position
+ *    sliders were redundant with dragging and are gone);
  *  - three sliders remain: 缩放 (zoom), 遮罩 (overlay), 表面 (surface);
  *  - the tint mode is a two-way segmented control (暗色 / 亮色);
  *  - the footer holds 更换图片 / 清除壁纸 / 完成.
@@ -24,7 +28,7 @@ import {
 	WALLPAPER_ZOOM_MIN,
 	clamp
 } from "../shared/theme-file.ts";
-import { WALLPAPER_PLACEHOLDER_IMAGE, coverSizeFor } from "./wallpaper.ts";
+import { WALLPAPER_PLACEHOLDER_IMAGE } from "./wallpaper.ts";
 
 /** Measure an element's content box, updating on resize (for crop math). */
 function useBoxSize(ref) {
@@ -118,9 +122,37 @@ export function WallpaperDialog({
 	const overlaySlider = useDraftSlider(Math.round(overlay * 100), (value) => updateWallpaper({ overlay: value / 100 }));
 	const surfaceSlider = useDraftSlider(Math.round(surface * 100), (value) => updateWallpaper({ surface: value / 100 }));
 
-	// The preview box shows exactly the crop the full-screen layer will show
-	// (same cover × zoom math, same pan percentages).
-	const size = box.width > 0 && box.height > 0 ? coverSizeFor(box.width, box.height, wallpaper) : null;
+	// Banner preview geometry: the box shows the entire image fitted (aspect
+	// preserved, centered) and a dashed frame marks the actual display area —
+	// the cover × zoom crop at the pan position, the same math the
+	// full-screen layer uses. Dragging pans the frame, the wheel resizes it.
+	const imgW = Number(wallpaper.width) > 0 ? Number(wallpaper.width) : 16;
+	const imgH = Number(wallpaper.height) > 0 ? Number(wallpaper.height) : 9;
+	const fitted =
+		box.width > 0 && box.height > 0
+			? (() => {
+					const fitScale = Math.min(box.width / imgW, box.height / imgH);
+					const fitW = imgW * fitScale;
+					const fitH = imgH * fitScale;
+					const ox = (box.width - fitW) / 2;
+					const oy = (box.height - fitH) / 2;
+					const coverScale = Math.max(box.width / imgW, box.height / imgH) * zoom;
+					const dispW = box.width / coverScale;
+					const dispH = box.height / coverScale;
+					return {
+						fitW,
+						fitH,
+						ox,
+						oy,
+						frame: {
+							left: ox + (imgW - dispW) * (x / 100) * fitScale,
+							top: oy + (imgH - dispH) * (y / 100) * fitScale,
+							width: dispW * fitScale,
+							height: dispH * fitScale
+						}
+					};
+				})()
+			: null;
 
 	const onPointerDown = (event) => {
 		if (event.button !== 0) return;
@@ -237,12 +269,12 @@ export function WallpaperDialog({
 					ref={boxRef}
 					className={dragging ? "dsh-tc-editor-preview dsh-tc-wp-preview dsh-tc-dragging" : "dsh-tc-editor-preview dsh-tc-wp-preview"}
 					style={
-						size === null
-							? { backgroundImage: `url("${image}")`, backgroundSize: "cover", backgroundPosition: `${x}% ${y}%` }
+						fitted === null
+							? { backgroundImage: `url("${image}")`, backgroundSize: "contain", backgroundPosition: "center" }
 							: {
 									backgroundImage: `url("${image}")`,
-									backgroundSize: `${size.width}px ${size.height}px`,
-									backgroundPosition: `${x}% ${y}%`
+									backgroundSize: `${fitted.fitW}px ${fitted.fitH}px`,
+									backgroundPosition: `${fitted.ox}px ${fitted.oy}px`
 								}
 					}
 					onPointerDown={onPointerDown}
@@ -251,6 +283,17 @@ export function WallpaperDialog({
 					onPointerCancel={onPointerUp}
 					onWheel={onWheel}
 				>
+					{fitted !== null && (
+						<div
+							className="dsh-tc-wp-frame"
+							style={{
+								left: fitted.frame.left,
+								top: fitted.frame.top,
+								width: fitted.frame.width,
+								height: fitted.frame.height
+							}}
+						/>
+					)}
 					<p className="dsh-tc-editor-hint">{t("wallpaper.dragHint")}</p>
 				</div>
 

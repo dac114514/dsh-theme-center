@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4f6ef7"/>
+      <stop offset="0.55" stop-color="#8b5cf6"/>
+      <stop offset="1" stop-color="#c084fc"/>
+    </linearGradient>
+  </defs>
+  <rect width="256" height="256" rx="56" fill="url(#bg)"/>
+  <!-- swatch grid: light / dark / warm / rose -->
+  <rect x="52" y="52" width="72" height="72" rx="16" fill="#ffffff"/>
+  <circle cx="94" cy="88" r="10" fill="#4176e6"/>
+  <rect x="132" y="52" width="72" height="72" rx="16" fill="#15151b"/>
+  <circle cx="174" cy="88" r="10" fill="#5686fe"/>
+  <rect x="52" y="132" width="72" height="72" rx="16" fill="#faf9f5"/>
+  <circle cx="94" cy="168" r="10" fill="#c96442"/>
+  <rect x="132" y="132" width="72" height="72" rx="16" fill="#fff9fa"/>
+  <circle cx="174" cy="168" r="10" fill="#e86a92"/>
+</svg>

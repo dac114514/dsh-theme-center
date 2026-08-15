@@ -2,7 +2,7 @@
  * ThemeGallerySection — the settings page behind the left-nav "主题" entry.
  *
  * Layout (right content column):
- *  - intro + toolbar (跟随系统 pill, import buttons);
+ *  - intro + toolbar (import buttons);
  *  - 浅色 group: 3-column grid of light themes;
  *  - 暗色 group: 3-column grid of dark themes;
  *  - 自定义 group: the wallpaper card, a compact wallpaper row (更换图片 /
@@ -24,7 +24,6 @@ import {
 	IconCloseOutline16,
 	IconDownloadOutline16,
 	IconEditOutline16,
-	IconFollowsystemOutline16,
 	IconPaperclipOutline16,
 	IconPlusOutline16,
 	IconTrashOutline16
@@ -224,8 +223,6 @@ export function ThemeGallerySection({ t, useStore, setActive, importText, remove
 		</div>
 	);
 
-	const systemActive = state.active === "system";
-
 	return (
 		<div className="dsh-tc-section">
 			<div>
@@ -234,15 +231,6 @@ export function ThemeGallerySection({ t, useStore, setActive, importText, remove
 			</div>
 
 			<div className="dsh-tc-toolbar">
-				<button
-					type="button"
-					className="dsh-tc-system"
-					data-active={systemActive ? "true" : undefined}
-					onClick={() => setActive("system")}
-				>
-					<IconFollowsystemOutline16 size={14} />
-					{t("followSystem")}
-				</button>
 				<span className="dsh-tc-toolbar-spacer" />
 				<button type="button" className="dsh-tc-button" onClick={() => fileRef.current?.click()}>
 					<IconPlusOutline16 size={14} />

@@ -1,7 +1,8 @@
 /**
  * Regenerates the archived dsh-theme files under docs/archive/ for the
- * themes that were removed from the built-in catalog in v1.1.0 (they
- * duplicated a kept visual identity). The palettes are frozen here so the
+ * themes that were removed from the built-in catalog — the v1.1.0 curation
+ * (palettes duplicating a kept identity) plus the v1.2.0 removals on
+ * request (`minimal`, `synthwave`). The palettes are frozen here so the
  * archive stays reproducible; the emitted files are valid dsh-theme JSON
  * and can be re-imported as custom themes from the Theme Center gallery.
  *
@@ -562,6 +563,89 @@ const REMOVED = [
 			warn: "#fbbf24",
 			toast: "#3d3d3d",
 			tooltip: "#3d3d3d"
+		}
+	},
+	// ── v1.2.0: removed on request (archived so the palettes stay available) ──
+	{
+		id: "minimal",
+		name: "Minimal",
+		description: "Pure white and black, nothing extra.",
+		colorScheme: "light",
+		palette: {
+			base: "#ffffff",
+			surface: "#ffffff",
+			surface2: "#fafafa",
+			surface3: "#f4f4f5",
+			overlay: "#ececee",
+			module: "#fafafa",
+			border1: "rgba(0, 0, 0, 0.05)",
+			border2: "rgba(0, 0, 0, 0.1)",
+			border3: "rgba(0, 0, 0, 0.14)",
+			accent: "#111111",
+			accentHover: "#000000",
+			text: "#111111",
+			textSecondary: "#55555c",
+			textTertiary: "#88888f",
+			textOnAccent: "#ffffff",
+			hover: "rgba(0, 0, 0, 0.04)",
+			active: "rgba(0, 0, 0, 0.08)",
+			sidebar: "#f7f7f7",
+			itemActive: "#eeeeef",
+			itemHover: "#f2f2f3",
+			itemAccent: "rgba(0, 0, 0, 0.06)",
+			bubble: "#f2f2f2",
+			bubbleHighlight: "#e8e8e9",
+			input: "#ffffff",
+			code: "#f7f7f7",
+			inlineCode: "#f0f0f1",
+			scrollbar: "#ddddde",
+			scrollbarHover: "#c8c8cb",
+			error: "#dc2626",
+			success: "#16a34a",
+			warn: "#d97706",
+			toast: "#111111",
+			tooltip: "#111111"
+		}
+	},
+	{
+		id: "synthwave",
+		name: "Synthwave",
+		description: "Neon purple and midnight synthwave.",
+		colorScheme: "dark",
+		palette: {
+			base: "#150b2e",
+			surface: "#1a0f38",
+			surface2: "#201346",
+			surface3: "#261a54",
+			overlay: "#2e2066",
+			module: "#261a54",
+			border1: "rgba(196, 181, 253, 0.09)",
+			border2: "rgba(196, 181, 253, 0.16)",
+			border3: "rgba(196, 181, 253, 0.24)",
+			accent: "#c084fc",
+			accentHover: "#d8b4fe",
+			text: "#ede9fe",
+			textSecondary: "#b7a8e8",
+			textTertiary: "#8578b8",
+			textOnAccent: "#1a0f38",
+			hover: "rgba(196, 181, 253, 0.08)",
+			active: "rgba(196, 181, 253, 0.14)",
+			sidebar: "#120927",
+			itemActive: "#2a1b52",
+			itemHover: "#221445",
+			itemAccent: "rgba(192, 132, 252, 0.18)",
+			bubble: "#2a1b52",
+			bubbleHighlight: "#352368",
+			input: "#1a0f38",
+			code: "#1a0f38",
+			inlineCode: "#2b1b55",
+			scrollbar: "#3b2a6e",
+			scrollbarHover: "#4a3686",
+			error: "#fb7185",
+			success: "#34d399",
+			warn: "#fbbf24",
+			toast: "#2e2066",
+			tooltip: "#2e2066"
 		}
 	}
 ];

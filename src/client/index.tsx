@@ -101,6 +101,8 @@ class ThemeCenterController {
 	persistTimer;
 	/** Timestamp of the user's freshest selection click (click-wins window). */
 	lastUserSelectionAt;
+	/** Timestamp of the freshest local wallpaper write (edit-wins window). */
+	lastWallpaperWriteAt;
 
 	constructor(ctx) {
 		this.ctx = ctx;
@@ -127,6 +129,8 @@ class ThemeCenterController {
 		this.persistTimer = undefined;
 		/** Timestamp of the user's freshest selection click (click-wins window). */
 		this.lastUserSelectionAt = 0;
+		/** Timestamp of the freshest local wallpaper write (edit-wins window). */
+		this.lastWallpaperWriteAt = 0;
 	}
 
 	/* ── store mirror ─────────────────────────────────────────────────── */
@@ -379,11 +383,21 @@ class ThemeCenterController {
 		const wallpaperChanged =
 			wallpaper.dataUrl !== this.state.wallpaper.dataUrl || wallpaper.mode !== this.state.wallpaper.mode;
 		this.state.custom = custom;
-		this.state.wallpaper = wallpaper;
 		this.state.ready = true;
+		// Wallpaper edit-window: while a local wallpaper edit (slider drag,
+		// pan, wheel zoom, pick, mode switch, clear) is in flight, the
+		// notifications carry in-flight or stale copies of our own writes;
+		// adopting them would revert the live preview and snap the editor
+		// sliders back — the 滑块回弹 / 缩放回弹. The local state is
+		// authoritative inside the window, exactly like the selection
+		// click-wins window below.
+		const recentWallpaperEdit = Date.now() - (this.lastWallpaperWriteAt ?? 0) < 400;
+		if (!recentWallpaperEdit) {
+			this.state.wallpaper = wallpaper;
+			if (wallpaperChanged) this.refreshWallpaperRegistration();
+		}
 		this.publishState();
 		this.reconcileCustom(custom);
-		if (wallpaperChanged) this.refreshWallpaperRegistration();
 		// Click-wins window: a notification carrying a value older than the
 		// user's freshest click (an in-flight round trip landing late) must not
 		// clobber the selection. Outside the window the document is adopted
@@ -496,6 +510,7 @@ class ThemeCenterController {
 		});
 		this.publishState();
 		this.refreshWallpaperRegistration();
+		this.lastWallpaperWriteAt = Date.now();
 		this.scope.set(FIELD_WALLPAPER, this.state.wallpaper);
 		if (this.state.active === "wallpaper") this.applyActive("wallpaper");
 		return processed;
@@ -508,6 +523,7 @@ class ThemeCenterController {
 		this.state.wallpaper = next;
 		this.publishState();
 		this.refreshWallpaperRegistration();
+		this.lastWallpaperWriteAt = Date.now();
 		this.scope.set(FIELD_WALLPAPER, this.state.wallpaper);
 		if (this.state.active === "wallpaper") this.applyActive("wallpaper");
 	}
@@ -523,6 +539,7 @@ class ThemeCenterController {
 		this.state.wallpaper = normalizeWallpaper({ ...this.state.wallpaper, name: "", dataUrl: "" });
 		this.publishState();
 		this.refreshWallpaperRegistration();
+		this.lastWallpaperWriteAt = Date.now();
 		this.scope.set(FIELD_WALLPAPER, this.state.wallpaper);
 		if (this.state.active === "wallpaper") this.applyActive("wallpaper");
 	}
