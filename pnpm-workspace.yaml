@@ -1,0 +1,4 @@
+# esbuild needs its postinstall build script; approve it so `pnpm build`
+# works out of the box for contributors.
+allowBuilds:
+  esbuild: true

@@ -1,0 +1,31 @@
+{
+  "format": "dsh-theme",
+  "version": 1,
+  "id": "aurora",
+  "name": "Aurora",
+  "description": "A deep violet night sky with a glowing accent.",
+  "colorScheme": "dark",
+  "tokens": {
+    "--dsw-alias-bg-base": "#0d0b1e",
+    "--dsw-alias-bg-layer-1": "#121028",
+    "--dsw-alias-bg-layer-2": "#171434",
+    "--dsw-alias-bg-layer-3": "#1d1940",
+    "--dsw-alias-bg-overlay": "#241f4d",
+    "--dsw-alias-border-l1": "rgba(196, 181, 253, 0.08)",
+    "--dsw-alias-border-l2": "rgba(196, 181, 253, 0.15)",
+    "--dsw-alias-brand-primary": "#9f7aea",
+    "--dsw-alias-brand-text": "#9f7aea",
+    "--dsw-alias-button-primary-fill": "#7c5cd6",
+    "--dsw-alias-button-primary-hover": "#9f7aea",
+    "--dsw-alias-label-primary": "#ece9fb",
+    "--dsw-alias-label-secondary": "#a9a3cf",
+    "--dsw-alias-label-tertiary": "#7b75a3",
+    "--dsw-specific-sidebar-fill": "#0a0918",
+    "--dsw-specific-bubble": "#1d1940",
+    "--dsw-specific-bubble-highlight": "#262052",
+    "--dsw-specific-input-major": "#121028",
+    "--dsw-alias-state-error-primary": "#f87171",
+    "--dsw-alias-state-success-primary": "#4ade80",
+    "--dsw-alias-state-warn-primary": "#fbbf24"
+  }
+}
