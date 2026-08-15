@@ -30,10 +30,6 @@ dsh plugin --profile web add dsh-theme-center
 
 重启 `dsh web`，然后打开 **设置 → 主题**。
 
-主题与壁纸的选择开箱即可持久化：插件自带一个针对自身命名空间的 loopback-only
-设置桥接，即使宿主的 API 网关白名单（`WEB_SETTINGS_NAMESPACES`）未列出它也能
-正常工作。无需手动补丁，升级后也无需额外步骤（见[注意事项](#注意事项-notes)）。
-
 ## 卸载 Uninstall
 
 ```sh
@@ -116,13 +112,6 @@ dsh plugin --profile web add github:dac114514/dsh-theme-center
 
 ## 注意事项 Notes
 
-- **设置桥接。** DSH 的 API 网关（`dsh-host-apiproxy`）只暴露硬编码的设置命名空间
-  白名单（`WEB_SETTINGS_NAMESPACES`）；像 `theme-center` 这样的第三方命名空间
-  否则会在 RPC 边界被拒绝。本插件自带 loopback-only 设置桥接
-  （`/api/dsh-theme-center`），通过宿主 settings seam 重新提供该命名空间 ——
-  同样的 schema 校验、revision fencing 与持久化，无需打补丁。在宿主已暴露该
-  命名空间时使用官方通道，桥接不会激活。出于安全考虑，桥接请求仅限 loopback
-  （localhost/127.0.0.1）。
 - **开发** —— `pnpm install` → `pnpm typecheck` → `pnpm build`；
   `node scripts/smoke.mjs` 可在无浏览器环境下运行控制器冒烟测试。
 
