@@ -5,14 +5,11 @@
  * so `ctx.settingsScope.bind({ namespace: "theme-center" })` answers
  * `settings-not-exposed` and settles on `unavailable` — the plugin would load
  * but never persist theme/wallpaper choices. This binder wraps the official
- * scope: when it reports the namespace `ready`, the wrapper is a pass-through;
- * when it reports `unavailable` on a loopback connection, a bridge controller
- * takes over and serves the same `SettingsScope` contract from the plugin's
- * host-side bridge routes (`/api/dsh-theme-center`, see src/host/bridge.ts).
- * Remote browsers (non-loopback) never use the bridge, matching the official
- * process-local policy. On hosts whose apiproxy already exposes the namespace,
- * the official scope stays the primary transport and the bridge never
- * activates.
+ * scope with a same-origin Host bridge. When the bridge can describe the
+ * namespace and is writable, the wrapper prefers it; otherwise the official
+ * scope remains primary. This keeps reverse-proxied and tunneled Web UIs
+ * persistent without relying on hostname allowlists: the browser still calls
+ * only the current origin, and the Host bridge keeps its own request guard.
  */
 import type { Context } from "@deepseek-ai/cordis";
 import type {
@@ -96,12 +93,6 @@ function createBridgeApi(fetchFn: typeof fetch): BridgeSettingsFace {
 			mutate: async payload => post("/mutate", payload) as Promise<{ result: BridgeMutateResult }>
 		}
 	};
-}
-
-/** Whether the current page is served over loopback (bridge eligibility). */
-function isLoopbackPage(): boolean {
-	const hostname = window.location.hostname;
-	return hostname === "localhost" || hostname === "127.0.0.1" || hostname === "::1" || hostname === "[::1]";
 }
 
 /**
@@ -223,43 +214,51 @@ class BridgeScopeController<T> implements SettingsScope<T> {
 	}
 }
 
+function snapshotIsReadyAndWritable<T>(snapshot: SettingsScopeSnapshot<T>): boolean {
+	return snapshot.status === "ready" && snapshot.writable !== false;
+}
+
 /**
- * Bind one namespace scope, preferring the official transport and falling
- * back to the plugin's loopback bridge when the official scope reports the
- * namespace unavailable.
+ * Bind one namespace scope, preferring the plugin bridge whenever the
+ * same-origin Host route is reachable and writable. The bridge route is safe to
+ * probe on all origins because it is same-origin from the browser's point of
+ * view, while the Host route still enforces its own request guard.
  * @param ctx - client context (provides the official settingsScope service).
  * @param spec - namespace contract.
  * @returns the composited scope.
  */
 export function bindCompatSettingsScope<T>(ctx: Context, spec: SettingsScopeSpec<T>): SettingsScope<T> {
 	const official = ctx.settingsScope.bind(spec);
-	// Prime the bridge controller but keep it dormant until needed.
 	const bridge = new BridgeScopeController<T>(createBridgeApi(fetch), spec);
 	let active = official;
 
-	// Watch the official scope: once it settles ready, pass through forever;
-	// on unavailable at loopback, switch to the bridge controller.
-	const disposer = official.subscribe(() => {
-		const snapshot = official.getSnapshot();
-		if (snapshot.status === "ready") {
-			active = official;
+	const chooseActive = (): void => {
+		const bridgeSnapshot = bridge.getSnapshot();
+		if (snapshotIsReadyAndWritable(bridgeSnapshot)) {
+			active = bridge;
 			return;
 		}
-		if (snapshot.status === "unavailable" && isLoopbackPage()) {
-			if (active !== bridge) {
-				active = bridge;
-				void bridge.load();
-			}
-			return;
-		}
-	});
-	// Teardown the official subscription alongside the composite's lifetime is
-	// left to the caller; the bridge holds no external resources to release.
-	void disposer;
+		active = official;
+	};
+
+	// Probe the bridge even when the official scope settles ready. Reverse
+	// proxies and Cloudflare Tunnel keep the bridge same-origin to the page, but
+	// the official client settings scope may still expose a stale/default view.
+	void bridge.load().then(chooseActive);
+
+	void official.subscribe(chooseActive);
+	void bridge.subscribe(chooseActive);
 
 	return {
 		getSnapshot: () => active.getSnapshot(),
-		subscribe: listener => active.subscribe(listener),
+		subscribe: listener => {
+			const unsubscribeOfficial = official.subscribe(listener);
+			const unsubscribeBridge = bridge.subscribe(listener);
+			return () => {
+				unsubscribeOfficial();
+				unsubscribeBridge();
+			};
+		},
 		set: (field, value) => active.set(field, value),
 		unset: field => active.unset(field)
 	};
